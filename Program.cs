@@ -35,18 +35,57 @@ if (files.Count == 0) {
 }
 
 foreach (var file in files) {
-	if (files.Count > 1)
-		Console.WriteLine(file);
-	foreach (var line in File.ReadLines(file)) {
-		var s = line.Trim();
+	var prev = "";
+	foreach (var line0 in File.ReadLines(file)) {
+		var line = line0.TrimEnd();
+
+		// All tests will ignore leading whitespace
+		var s = line.TrimStart();
+
+		// line comment
 		if (s.StartsWith("//")) {
-			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.ForegroundColor = ConsoleColor.Green;
 			Console.WriteLine(line);
 			continue;
 		}
+
+		// Program should work correctly regardless of brace style
+		if (s == "{" && !prev.EndsWith('{')) {
+			line = prev + " {";
+			prev = "";
+			s = line.TrimStart();
+		} else
+			prev = line;
+
+		// skip implementation details
+		if (!s.EndsWith('{'))
+			continue;
+		if (s.StartsWith("case "))
+			continue;
+		if (s.StartsWith("default:"))
+			continue;
+		if (s.StartsWith("for "))
+			continue;
+		if (s.StartsWith("foreach "))
+			continue;
+		if (s.StartsWith("if "))
+			continue;
+		if (s.StartsWith("switch "))
+			continue;
+		if (s.StartsWith("while "))
+			continue;
+
+		// syntax color by line
+		if (s.StartsWith("namespace "))
+			Console.ForegroundColor = ConsoleColor.Red;
+		else if (s.StartsWith("public "))
+			Console.ForegroundColor = ConsoleColor.Yellow;
+		else
+			Console.ForegroundColor = ConsoleColor.White;
+
+		// print this line
+		Console.WriteLine(line);
 	}
-	if (files.Count > 1)
-		Console.WriteLine();
 }
 Console.ResetColor();
 return 0;
