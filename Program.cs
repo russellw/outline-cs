@@ -36,7 +36,6 @@ if (files.Count == 0) {
 
 foreach (var file in files) {
 	var line = 0;
-	var prev = "";
 	foreach (var s0 in File.ReadLines(file)) {
 		line++;
 		var s = s0.TrimEnd().Replace("\t", "    ");
@@ -51,14 +50,6 @@ foreach (var file in files) {
 			Console.WriteLine(s);
 			continue;
 		}
-
-		// Program should work correctly regardless of brace style
-		if (t == "{" && !prev.EndsWith('{')) {
-			s = prev + " {";
-			prev = "";
-			t = s.TrimStart();
-		} else
-			prev = s;
 
 		// Skip implementation details
 		if (!t.EndsWith('{'))
