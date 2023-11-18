@@ -35,56 +35,62 @@ if (files.Count == 0) {
 }
 
 foreach (var file in files) {
+	var line = 0;
 	var prev = "";
-	foreach (var line0 in File.ReadLines(file)) {
-		var line = line0.TrimEnd().Replace("\t", "    ");
+	foreach (var s0 in File.ReadLines(file)) {
+		line++;
+		var s = s0.TrimEnd().Replace("\t", "    ");
 
 		// All tests will ignore leading whitespace
-		var s = line.TrimStart();
+		var t = s.TrimStart();
 
 		// line comment
-		if (s.StartsWith("//")) {
+		if (t.StartsWith("//")) {
+			PrintLineNumber(line);
 			Console.ForegroundColor = ConsoleColor.Green;
-			Console.WriteLine(line);
+			Console.WriteLine(s);
 			continue;
 		}
 
 		// Program should work correctly regardless of brace style
-		if (s == "{" && !prev.EndsWith('{')) {
-			line = prev + " {";
+		if (t == "{" && !prev.EndsWith('{')) {
+			s = prev + " {";
 			prev = "";
-			s = line.TrimStart();
+			t = s.TrimStart();
 		} else
-			prev = line;
+			prev = s;
 
 		// skip implementation details
-		if (!s.EndsWith('{'))
+		if (!t.EndsWith('{'))
 			continue;
-		if (s.StartsWith("case "))
+		if (t.StartsWith("case "))
 			continue;
-		if (s.StartsWith("default:"))
+		if (t.StartsWith("default:"))
 			continue;
-		if (s.StartsWith("for "))
+		if (t.StartsWith("for "))
 			continue;
-		if (s.StartsWith("foreach "))
+		if (t.StartsWith("foreach "))
 			continue;
-		if (s.StartsWith("if "))
+		if (t.StartsWith("if "))
 			continue;
-		if (s.StartsWith("switch "))
+		if (t.StartsWith("switch "))
 			continue;
-		if (s.StartsWith("while "))
+		if (t.StartsWith("while "))
 			continue;
 
+		// now the decision to print has been made
+		PrintLineNumber(line);
+
 		// syntax color by line
-		if (s.StartsWith("namespace "))
+		if (t.StartsWith("namespace "))
 			Console.ForegroundColor = ConsoleColor.Red;
-		else if (s.StartsWith("public "))
+		else if (t.StartsWith("public "))
 			Console.ForegroundColor = ConsoleColor.Yellow;
 		else
 			Console.ForegroundColor = ConsoleColor.White;
 
 		// print this line
-		Console.WriteLine(line);
+		Console.WriteLine(s);
 	}
 }
 Console.ResetColor();
@@ -92,4 +98,9 @@ return 0;
 
 static void Help() {
 	Console.WriteLine("Usage: outline-cs file");
+}
+
+static void PrintLineNumber(int line) {
+	Console.ForegroundColor = ConsoleColor.Blue;
+	Console.Write(string.Format("{0,6}  ", line));
 }
