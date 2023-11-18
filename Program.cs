@@ -44,7 +44,7 @@ foreach (var file in files) {
 		// All tests will ignore leading whitespace
 		var t = s.TrimStart();
 
-		// line comment
+		// Line comment
 		if (t.StartsWith("//")) {
 			PrintLineNumber(line);
 			Console.ForegroundColor = ConsoleColor.Green;
@@ -60,7 +60,7 @@ foreach (var file in files) {
 		} else
 			prev = s;
 
-		// skip implementation details
+		// Skip implementation details
 		if (!t.EndsWith('{'))
 			continue;
 		if (t.StartsWith("case "))
@@ -78,10 +78,10 @@ foreach (var file in files) {
 		if (t.StartsWith("while "))
 			continue;
 
-		// now the decision to print has been made
+		// Now the decision to print has been made
 		PrintLineNumber(line);
 
-		// syntax color by line
+		// Syntax color by line
 		if (t.StartsWith("namespace "))
 			Console.ForegroundColor = ConsoleColor.Red;
 		else if (t.StartsWith("public "))
@@ -89,7 +89,7 @@ foreach (var file in files) {
 		else
 			Console.ForegroundColor = ConsoleColor.White;
 
-		// print this line
+		// Print this line
 		Console.WriteLine(s);
 	}
 }
