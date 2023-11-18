@@ -102,5 +102,5 @@ static void Help() {
 
 static void PrintLineNumber(int line) {
 	Console.ForegroundColor = ConsoleColor.Blue;
-	Console.Write(string.Format("{0,6}  ", line));
+	Console.Write($"{line,6}  ");
 }
