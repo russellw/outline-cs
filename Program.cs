@@ -37,7 +37,7 @@ if (files.Count == 0) {
 foreach (var file in files) {
 	var prev = "";
 	foreach (var line0 in File.ReadLines(file)) {
-		var line = line0.TrimEnd();
+		var line = line0.TrimEnd().Replace("\t", "    ");
 
 		// All tests will ignore leading whitespace
 		var s = line.TrimStart();
