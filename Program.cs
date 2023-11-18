@@ -81,7 +81,7 @@ foreach (var file in files) {
 		// Now the decision to print has been made
 		PrintLineNumber(line);
 
-		// Syntax color by line
+		// Syntax color
 		if (t.StartsWith("namespace "))
 			Console.ForegroundColor = ConsoleColor.Red;
 		else if (t.StartsWith("public "))
@@ -89,8 +89,8 @@ foreach (var file in files) {
 		else
 			Console.ForegroundColor = ConsoleColor.White;
 
-		// Print this line
-		Console.WriteLine(s);
+		// Print this line without the {
+		Console.WriteLine(s[..(s.Length - 1)].TrimEnd());
 	}
 }
 Console.ResetColor();
