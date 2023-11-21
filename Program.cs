@@ -58,6 +58,8 @@ foreach (var file in files) {
 			continue;
 		if (t.StartsWith("default:"))
 			continue;
+		if (t.StartsWith("do "))
+			continue;
 		if (t.StartsWith("for "))
 			continue;
 		if (t.StartsWith("foreach "))
